@@ -10,8 +10,14 @@ idf.py build
 # start docker container
 
 ```bash
-docker run .. stuff ..
-qemu-system-xtensa -nographic -machine esp32 -drive file=build/flash_image.bin,if=mtd,format=raw
+
+# on terminal 1:
+.\docker-run.ps1 "qemu-system-xtensa -nographic -s -S -machine esp32 -drive file=build/flash_image.bin,if=mtd,format=raw"
+
+# on terminal 2:
+docker exec  -it docker-esp-idf /opt/esp/entrypoint.sh xtensa-esp32-elf-gdb build/rfpay.elf -x gdbinit
 ```
+
+press 'c' to begin execution
 
 press ```CTRL+A, X``` to exit qemu while it's running
