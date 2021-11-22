@@ -11,11 +11,11 @@ RUN apt-get update && apt-get upgrade -y && \
 	libglib2.0-dev libpixman-1-dev libgcrypt20-dev
 
 RUN git clone --quiet https://github.com/espressif/qemu.git \
-		&& cd qemu \
-		&& mkdir -p build \
-		&& cd build \
-		&& ../configure --target-list=xtensa-softmmu     --enable-debug --enable-sanitizers     --disable-strip     --disable-capstone --disable-vnc \
-		&& make vga=no \
-		&& make install \
-        	&& cd ..\.. \ 
-        	&& rm -rf qemu
+	&& cd qemu \
+	&& mkdir -p build \
+	&& cd build \
+	&& ../configure --target-list=xtensa-softmmu --enable-debug --enable-sanitizers --disable-strip --disable-capstone --disable-vnc \
+	&& make vga=no \
+	&& make install \
+	&& cd ../.. \ 
+	&& rm -rf qemu
