@@ -1,24 +1,29 @@
-# create compatible firmware file for qemu
+# ESP32 + QEMU + Docker + GDB
 
 This project includes a Dockerfile that extends the dockerized version of the esp-idf toolchain. 
 It builds the ESP32-specific version of the QEMU emulator inside a docker container.
 You can use this docker container to use QEMU to run your app in an emulator, and debug!
 Also supports openethernet for virtual network communications.
 
-based on instructions found at: https://github.com/espressif/qemu/wiki
+This is some pretty advanced stuff, be prepared to spend a bit of time dialing in the config, and the instructions here are probably not perfect. YMMV
 
+Based on instructions found at: https://github.com/espressif/qemu/wiki
+
+# Setup
+HIGHLY RECOMMEND always doing this under linux. If on windows, use WSL2 and do it on the native FS (windows shared fs into WSL is crazy slow)
+In your esp32 project directory pull this docker container
 ```bash
-# in your esp32 project directory pull this docker container
-# HIGHLY RECOMMEND always doing this under linux. If on windows, use WSL2 and do it on the native FS [windows shares are slow]
 docker pull ghcr.io/unit-e/esp-idf-qemu  # add tag if needed
 ```
 
-```
-# use this command to enter the container and run commands. use this for everything below.
-# your code will show up as a volume in the container located at /project
+Use this command to enter the container and run commands. use this for everything below.
+Your code will show up as a volume in the container located at /project
+```bash
 docker run --rm -it --name esp-idf-qemu -v $pwd:/project -w /project ghcr.io/unit-e/esp-idf-qemu:v4.3.1-docker002 /bin/bash -c "bash"
 ```
 
+# Build
+```bash
 # 1. in the container, build
 idf.py build
 
@@ -46,9 +51,10 @@ flushregs
 thb app_main
 ```
 
-# after starting the app above, on a new terminal run this:
-# do this from your HOST OS (not windows)
-# docker exec is needed because qemu must already be running by this point and it needs to connect to it
+After starting the app above, on a new terminal run this:
+Do this from your HOST OS (not windows)
+'docker exec' is needed here because qemu must already be running by this point and it needs to connect to it
+```bash
 docker exec -it esp-idf-qemu /opt/esp/entrypoint.sh xtensa-esp32-elf-gdb build/YOUR_IMAGE_NAME.elf -x gdbinit
 ```
 
