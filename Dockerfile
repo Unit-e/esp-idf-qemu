@@ -1,5 +1,5 @@
 ARG MAKEFLAGS=-j$(nproc)
-FROM espressif/idf:release-v4.3 AS esp-idf
+FROM espressif/idf:release-v4.4 AS esp-idf
 
 USER root
 WORKDIR /root
