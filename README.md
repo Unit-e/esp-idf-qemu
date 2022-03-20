@@ -1,4 +1,4 @@
-# ESP32 + QEMU + Docker + GDB
+# ESP32 + QEMU + Docker + GDB 
 
 This project includes a Dockerfile that extends the dockerized version of the esp-idf toolchain. 
 It builds the ESP32-specific version of the QEMU emulator inside a docker container.
