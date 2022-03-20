@@ -19,7 +19,7 @@ docker pull ghcr.io/unit-e/esp-idf-qemu  # add tag if needed
 Use this command to enter the container and run commands. use this for everything below.
 Your code will show up as a volume in the container located at /project
 ```bash
-docker run --rm -it --name esp-idf-qemu -v $pwd:/project -w /project ghcr.io/unit-e/esp-idf-qemu:release-v4.4 /bin/bash -c "bash"
+docker run --rm -it --name esp-idf-qemu -v $pwd:/project -w /project ghcr.io/unit-e/esp-idf-qemu:release-v4.3 /bin/bash -c "bash"
 ```
 
 # Build
