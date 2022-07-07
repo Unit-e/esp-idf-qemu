@@ -46,8 +46,13 @@ idf.py build
 # on terminal 1: run your app
 # run from bash inside the docker container, like above.
 # you should see your serial console output and be able to interact with it here
-qemu-system-xtensa -nographic -s -S -machine esp32 -drive file=build/flash_image.bin,if=mtd,format=raw
+qemu-system-xtensa -nographic -machine esp32 -drive file=build/flash_image.bin,if=mtd,format=raw
 ```
+
+# press CTRL+A and then one of the following to interact with QEMU:
+ctrl+A then H - show help
+ctrl+A then X - exit
+https://www.qemu.org/docs/master/system/mux-chardev.html
 
 # Debug a running app with GDB
 
@@ -60,13 +65,18 @@ flushregs
 thb app_main
 ```
 
-After starting the app above, on a new terminal run this:
-Do this from your HOST OS (not windows)
-'docker exec' is needed here because qemu must already be running by this point and it needs to connect to it
 ```bash
-docker exec -it esp-idf-qemu /opt/esp/entrypoint.sh xtensa-esp32-elf-gdb build/YOUR_IMAGE_NAME.elf -x gdbinit
+
+# like above, start the esp32 app, but this time:
+# use gdb mode (-s) and halted at startup by default (-S)
+qemu-system-xtensa -nographic -s -S -machine esp32 -drive file=build/flash_image.bin,if=mtd,format=raw
+
+# while that's still running, open a new terminal and type this (via docker exec which will run this command in an existing docker already running container)
+docker exec -it esp-idf-qemu /opt/esp/entrypoint.sh xtensa-esp32-elf-gdb build/YOUR_IMAGE_NAME.elf -x gdbinitl
 ```
 
 # Tips:
 - in GDB, press 'c' to begin execution of the app.
 - to exit QEMU, press ```CTRL+A, X``` while it's running
+
+GDB listens on port 1234, you should be able to use other debuggers (graphical, like CLion) to connect and debug the code using 'remote GDB' configs.
