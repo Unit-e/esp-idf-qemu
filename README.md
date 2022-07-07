@@ -49,10 +49,10 @@ idf.py build
 qemu-system-xtensa -nographic -machine esp32 -drive file=build/flash_image.bin,if=mtd,format=raw
 ```
 
-# press CTRL+A and then one of the following to interact with QEMU:
-ctrl+A then H - show help
-ctrl+A then X - exit
-https://www.qemu.org/docs/master/system/mux-chardev.html
+press CTRL+A and then one of the following to interact with QEMU:
+- ctrl+A then H - show help
+- ctrl+A then X - exit
+- more at https://www.qemu.org/docs/master/system/mux-chardev.html
 
 # Debug a running app with GDB
 
@@ -72,7 +72,7 @@ thb app_main
 qemu-system-xtensa -nographic -s -S -machine esp32 -drive file=build/flash_image.bin,if=mtd,format=raw
 
 # while that's still running, open a new terminal and type this (via docker exec which will run this command in an existing docker already running container)
-docker exec -it esp-idf-qemu /opt/esp/entrypoint.sh xtensa-esp32-elf-gdb build/YOUR_IMAGE_NAME.elf -x gdbinitl
+docker exec -it esp-idf-qemu /opt/esp/entrypoint.sh xtensa-esp32-elf-gdb build/YOUR_IMAGE_NAME.elf -x gdbinit
 ```
 
 # Tips:
