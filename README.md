@@ -11,15 +11,23 @@ Based on instructions found at: https://github.com/espressif/qemu/wiki
 
 # Setup
 HIGHLY RECOMMEND always doing this under linux. If on windows, use WSL2 and do it on the native FS (windows shared fs into WSL is crazy slow)
+
+Login to github container registry if needed (only needed if using a private fork of this repo)
+```bash
+# generate a personal access token and use it as your password: https://github.com/settings/tokens
+docker login ghcr.io
+```
+
 In your esp32 project directory pull this docker container
 ```bash
-docker pull ghcr.io/unit-e/esp-idf-qemu  # add tag if needed
+# modify tag as needed
+docker pull ghcr.io/unit-e/esp-idf-qemu:release-v4.4
 ```
 
 Use this command to enter the container and run commands. use this for everything below.
 Your code will show up as a volume in the container located at /project
 ```bash
-docker run --rm -it --name esp-idf-qemu -v $pwd:/project -w /project ghcr.io/unit-e/esp-idf-qemu:v4.3.1-docker002 /bin/bash -c "bash"
+docker run --rm -it --name esp-idf-qemu -v $pwd:/project -w /project ghcr.io/unit-e/esp-idf-qemu:release-v4.4 /bin/bash -c "bash"
 ```
 
 # Build
