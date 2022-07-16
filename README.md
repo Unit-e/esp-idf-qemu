@@ -11,15 +11,24 @@ Based on instructions found at: https://github.com/espressif/qemu/wiki
 
 # Setup
 HIGHLY RECOMMEND always doing this under linux. If on windows, use WSL2 and do it on the native FS (windows shared fs into WSL is crazy slow)
+
+Login to github container registry if needed (only needed if using a private fork of this repo)
+```bash
+# generate a personal access token and use it as your password: https://github.com/settings/tokens
+docker login ghcr.io
+```
+
 In your esp32 project directory pull this docker container
 ```bash
-docker pull ghcr.io/unit-e/esp-idf-qemu  # add tag if needed
+# modify tag as needed
+docker pull ghcr.io/unit-e/esp-idf-qemu:release-v4.4
 ```
 
 Use this command to enter the container and run commands. use this for everything below.
 Your code will show up as a volume in the container located at /project
 ```bash
-docker run --rm -it --name esp-idf-qemu -v $pwd:/project -w /project ghcr.io/unit-e/esp-idf-qemu:release-v4.4 /bin/bash -c "bash"
+# run this in linux host OS (either native linux or WSL2 running on top of windows)
+docker run --rm -it --name esp-idf-qemu -v $PWD:/project -w /project ghcr.io/unit-e/esp-idf-qemu:release-v4.4 /bin/bash -c "bash"
 ```
 
 # Build
@@ -37,8 +46,13 @@ idf.py build
 # on terminal 1: run your app
 # run from bash inside the docker container, like above.
 # you should see your serial console output and be able to interact with it here
-qemu-system-xtensa -nographic -s -S -machine esp32 -drive file=build/flash_image.bin,if=mtd,format=raw
+qemu-system-xtensa -nographic -machine esp32 -drive file=build/flash_image.bin,if=mtd,format=raw
 ```
+
+press CTRL+A and then one of the following to interact with QEMU:
+- ctrl+A then H - show help
+- ctrl+A then X - exit
+- more at https://www.qemu.org/docs/master/system/mux-chardev.html
 
 # Debug a running app with GDB
 
@@ -51,13 +65,18 @@ flushregs
 thb app_main
 ```
 
-After starting the app above, on a new terminal run this:
-Do this from your HOST OS (not windows)
-'docker exec' is needed here because qemu must already be running by this point and it needs to connect to it
 ```bash
+
+# like above, start the esp32 app, but this time:
+# use gdb mode (-s) and halted at startup by default (-S)
+qemu-system-xtensa -nographic -s -S -machine esp32 -drive file=build/flash_image.bin,if=mtd,format=raw
+
+# while that's still running, open a new terminal and type this (via docker exec which will run this command in an existing docker already running container)
 docker exec -it esp-idf-qemu /opt/esp/entrypoint.sh xtensa-esp32-elf-gdb build/YOUR_IMAGE_NAME.elf -x gdbinit
 ```
 
 # Tips:
 - in GDB, press 'c' to begin execution of the app.
 - to exit QEMU, press ```CTRL+A, X``` while it's running
+
+GDB listens on port 1234, you should be able to use other debuggers (graphical, like CLion) to connect and debug the code using 'remote GDB' configs.
