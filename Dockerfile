@@ -19,3 +19,20 @@ RUN git clone --quiet https://github.com/espressif/qemu.git \
 	&& make install \
 	&& cd ../.. \ 
 	&& rm -rf qemu
+	
+# a list of optional but useful ports this container might listen on.
+# (however, it may be easier to just run docker with "--network host" to expose all ports)
+#  i.e. in case your qemu running esp32 is running a web server / char device fwd'ing / etc
+
+# for debugging QEMU's GDB server from outside the container
+EXPOSE 1234/tcp
+
+# ---------
+# because you might want to use these, and this is a dev container so, useful to have a few presets
+# ---------
+
+# for vaguely telnet-y / serial console-ish stuff
+EXPOSE 23/tcp
+
+# for vaguely HTTP-ish stuff. use qemu's port forwarding stuff
+EXPOSE 8088/tcp
