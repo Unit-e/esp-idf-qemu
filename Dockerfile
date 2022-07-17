@@ -17,7 +17,7 @@ RUN git clone --quiet https://github.com/espressif/qemu.git \
 	&& ../configure --target-list=xtensa-softmmu --enable-debug --enable-sanitizers --disable-strip --disable-capstone --disable-vnc \
 	&& make vga=no \
 	&& make install \
-	&& cd ../.. \ 
+	&& cd ../.. \
 	&& rm -rf qemu
 	
 # a list of optional but useful ports this container might listen on.

@@ -4,6 +4,8 @@ FROM ghcr.io/unit-e/esp-idf-qemu:release-v4.4
 # don't use for anything important. dev-only.
 # the purpose is to get access to the source code of esp-idf which is inside the container in /opt
 # for remote debugging purposes. avoid using this container unless you need it
+#
+# docker build . -f .\with_ssh_server.Dockerfile -t esp-idf-qemu:release-v4.4-with-ssh
 
 USER root
 WORKDIR /root
