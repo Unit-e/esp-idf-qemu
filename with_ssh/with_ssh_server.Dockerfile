@@ -17,7 +17,10 @@ RUN apt-get update && \
 
 RUN echo 'root:Pass42^' | chpasswd
 COPY sshd_config /etc/ssh/sshd_config
+COPY entrypoint-quiet.sh /opt/esp/entrypoint-quiet.sh
 
 CMD /usr/sbin/sshd -D
+
+ENTRYPOINT [ "/opt/esp/entrypoint-quiet.sh" ]
 
 EXPOSE 2222
