@@ -1,0 +1,2 @@
+# force everything to be LF always, CLRF messes with stuff that ends up in Docker containers
+* text=auto eol=lf
